@@ -17,7 +17,7 @@ Date: \tab 2011-04-02\cr
 License: \tab GNU General Public License Version 2\cr
 LazyLoad: \tab yes\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+
 }
 \author{
 Issei Kurahashi

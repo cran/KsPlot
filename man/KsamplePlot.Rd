@@ -1,6 +1,6 @@
 \name{KsamplePlot}
 \alias{KsamplePlot}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
 Check the power of a statistical model.
 }
@@ -8,30 +8,34 @@ Check the power of a statistical model.
 Check the power of a statistical model moving sample size k.
 }
 \usage{
-KsamplePlot(X, y, Ksample = c(seq(40, 100, 10), 150, seq(200, 1000, 100)), Method = "lm", Caret = "No", size = 5, Type = "numeric")
+KsamplePlot(X, y, Ksample = c(seq(40, 100, 10), 150, seq(200, 1000, 100)), 
+	Method = "lm", Caret = "No", size = 5, Type = "numeric")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{X}{
-%%     ~~Describe \code{X} here~~
+Explanatory variables
 }
   \item{y}{
-%%     ~~Describe \code{y} here~~
+Dependent variable
 }
   \item{Ksample}{
-%%     ~~Describe \code{Ksample} here~~
+Numbers of sample size
 }
   \item{Method}{
-%%     ~~Describe \code{Method} here~~
+Method of how to predict the dependent variable. "lm" is linear regression (default), 
+"svm" is Support Vector Machine, "nn" is Newral Network, "rf" is Random Forest, 
+"mars" is Multipe Adaptive Regression Splines, "cart" is Classification and Regression Tree, 
+"lasso" is LASSO.
 }
   \item{Caret}{
-%%     ~~Describe \code{Caret} here~~
+If Caret == "Yes", you can specify the Method caret form.
 }
   \item{size}{
-%%     ~~Describe \code{size} here~~
+NN's node size
 }
   \item{Type}{
-%%     ~~Describe \code{Type} here~~
+Type = "numeric" and Type = "binary" when the dependent variable is continuous and binary.
 }
 }
 
@@ -55,7 +59,3 @@ y1 <- ifelse(0 < y, 1, 0)
 KsResult3 <- KsamplePlot(X2, y1, Type = "binary")
 
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

@@ -1,28 +1,25 @@
 \name{Ksplot}
 \alias{Ksplot}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Draw K-sample plot.
 }
 \description{
-Draw K's plot for function KsamplePlot.
+Draw K's plot for function KsamplePlot using KsamplePlot object.
 }
 \usage{
 Ksplot(UseData, Type = "numeric", Method)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{UseData}{
-%%     ~~Describe \code{UseData} here~~
+KsamplePlot object
 }
   \item{Type}{
-%%     ~~Describe \code{Type} here~~
+Type = "numeric" and Type = "binary" when the dependent variable is continuous and binary.
 }
   \item{Method}{
-%%     ~~Describe \code{Method} here~~
+The method specified in KsamplePlot
 }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+

@@ -9,7 +9,7 @@ Check the power of a statistical model moving sample size k.
 }
 \usage{
 KsamplePlot(X, y, Ksample = c(seq(40, 100, 10), 150, seq(200, 1000, 100)), 
-	Method = "lm", Caret = "No", size = 5, Type = "numeric")
+	Method = "lm", Caret = "No", size = 5, Type = "numeric", NCV = 5)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,11 +35,16 @@ If Caret == "Yes", you can specify the Method caret form.
 NN's node size
 }
   \item{Type}{
-Type = "numeric" and Type = "binary" when the dependent variable is continuous and binary.
+Type = "numeric" or Type = "binary" when the dependent variable is continuous or binary.
+}
+  \item{NCV}{
+Performation number of harlf cross-validation (harlf of sample is training data and the other is test data).
 }
 }
 
 \examples{
+library(KsPlot)
+
 set.seed(1)
 x1   <- rnorm(1000000)
 set.seed(2)
@@ -47,15 +52,23 @@ x2   <- rnorm(1000000)
 set.seed(3)
 y    <- 2*x1 + x2**2 + rnorm(1000000)
 
-
 X1      <- data.frame(x1 = x1, x2 = x2)
 X2      <- data.frame(x1 = x1, x2 = x2, x3 = x2**2)
 y       <- y
 
+set.seed(1)
 KsResult1 <- KsamplePlot(X1, y)
+set.seed(1)
+KsResult1 <- KsamplePlot(X1, y, NCV=10)
+set.seed(1)
+KsResult2 <- KsamplePlot(X1, y, Method="svm")
+
+
+set.seed(1)
 KsResult2 <- KsamplePlot(X2, y)
 
 y1 <- ifelse(0 < y, 1, 0)
+set.seed(1)
 KsResult3 <- KsamplePlot(X2, y1, Type = "binary")
 
 }

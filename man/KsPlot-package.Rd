@@ -6,7 +6,7 @@
 Draw K-sample plot (K's plot).
 }
 \description{
-Check the power of a statistical model moving sample size k.
+Check the error of seveal statistical models changing the sample size k. Cpmpair error of test sample and training sample.
 }
 \details{
 \tabular{ll}{

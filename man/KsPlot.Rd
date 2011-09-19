@@ -7,18 +7,21 @@ Draw K-sample plot.
 Draw K's plot for function KsamplePlot using KsamplePlot object.
 }
 \usage{
-Ksplot(UseData, Type = "numeric", Method)
+Ksplot(UseDataTest, UseDataTrain, Type = "numeric", Method)
 }
 
 \arguments{
-  \item{UseData}{
-KsamplePlot object
+  \item{UseDataTest}{
+KsamplePlot object of test data.
+}
+  \item{UseDataTrain}{
+KsamplePlot object of training data.
 }
   \item{Type}{
-Type = "numeric" and Type = "binary" when the dependent variable is continuous and binary.
+Type = "numeric" or Type = "binary" when the dependent variable is continuous or binary.
 }
   \item{Method}{
-The method specified in KsamplePlot
+The method specified in KsamplePlot.
 }
 }
 

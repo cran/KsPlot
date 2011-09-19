@@ -74,9 +74,9 @@ Ksplot <- function(UseDataTest, UseDataTrain, Type = "numeric", Method) {
     legend("topright", c("Test", "Train"), pch=c(1, 0), lty=1:2, lwd=2)
   }
   if (Type == "binary") {
-    text(XLim * 0.7, 0.44 , paste("plateau  :", 
+    text(XLim * 0.7, 0.44 , paste("Test  plateau  :", 
                                  round(EstParTest[2], digits=2)), adj=0)
-    text(XLim * 0.7, 0.42, paste("k (slope):", 
+    text(XLim * 0.7, 0.42, paste("Test  k (slope):", 
                                  round(EstParTest[1], digits=2)), adj=0)
     text(XLim * 0.7, 0.39, paste("Train plateau  :", 
                                 round(EstParTrain[2], digits=2)), adj=0)

@@ -11,6 +11,7 @@ KsamplePlot <- function(X, y, Ksample = c(seq(40,100,10), 150,
   
   RsqTest  <- rep(NA, length(Ksample) * NCV)
   RsqTrain <- rep(NA, length(Ksample) * NCV)
+  DataPred <- c(0, 0, 0, 0, 0)
   
   
   for (j in 1:NCV) {
@@ -78,6 +79,14 @@ KsamplePlot <- function(X, y, Ksample = c(seq(40,100,10), 150,
         MSE1   <- Err1%*%Err1
         Var1   <- (Trainy-mean(Trainy))%*%(Trainy-mean(Trainy))
         RsqTrain[i + length(Ksample) * (j - 1)] <- (Var1 - MSE1) / Var1
+        
+        DataPred0 <- data.frame(Ksample=rep(Ksample[i], nrow(Varidx)*2), 
+                                NCV=j,
+                                CV=c(rep("Test", nrow(Varidx)), 
+                                       rep("Train", nrow(Varidx))), 
+                                ObsNum=c(Sample[-Train], Sample[Train]),
+                                Pred=c(predict(Model, Varidx), 
+                                       predict(Model, Trainx)))
       }
       
       
@@ -97,6 +106,50 @@ KsamplePlot <- function(X, y, Ksample = c(seq(40,100,10), 150,
             ROC1  <- caTools::colAUC(Post1, Trainy)
             RsqTrain[i + length(Ksample) * (j - 1)] <- as.numeric(ROC1)
           }
+          if (Method == "logistic") {
+            Model <- glm(y~., data = TrainData, family="binomial")
+            
+            Post  <- predict(Model, VaridData, type="response")
+            ROC   <- caTools::colAUC(Post, Varidy)
+            RsqTest[i + length(Ksample) * (j - 1)] <- as.numeric(ROC)
+            
+            Post1 <- predict(Model, TrainData, type="response")
+            ROC1  <- caTools::colAUC(Post1, Trainy)
+            RsqTrain[i + length(Ksample) * (j - 1)] <- as.numeric(ROC1)
+          }
+          if (Method == "cart") {
+            Model <- mvpart::rpart(y~., data = TrainData)
+            
+            Post  <- predict(Model, VaridData)
+            ROC   <- caTools::colAUC(Post, Varidy)
+            RsqTest[i + length(Ksample) * (j - 1)] <- as.numeric(ROC)
+            
+            Post1 <- predict(Model, TrainData)
+            ROC1  <- caTools::colAUC(Post1, Trainy)
+            RsqTrain[i + length(Ksample) * (j - 1)] <- as.numeric(ROC1)
+          }
+          if (Method == "rf") {
+            Model <- randomForest::randomForest(y~., data = TrainData)
+            
+            Post  <- predict(Model, VaridData)
+            ROC   <- caTools::colAUC(Post, Varidy)
+            RsqTest[i + length(Ksample) * (j - 1)] <- as.numeric(ROC)
+            
+            Post1 <- predict(Model, TrainData)
+            ROC1  <- caTools::colAUC(Post1, Trainy)
+            RsqTrain[i + length(Ksample) * (j - 1)] <- as.numeric(ROC1)
+          }
+          if (Method == "nn") {
+            Model <- nnet::nnet(y~., data = TrainData, size = size)
+            
+            Post  <- predict(Model, VaridData)
+            ROC   <- caTools::colAUC(Post, Varidy)
+            RsqTest[i + length(Ksample) * (j - 1)] <- as.numeric(ROC)
+            
+            Post1 <- predict(Model, TrainData)
+            ROC1  <- caTools::colAUC(Post1, Trainy)
+            RsqTrain[i + length(Ksample) * (j - 1)] <- as.numeric(ROC1)
+          }
           if (Method == "svm") {
             Model <- e1071::svm(y ~ ., data = TrainData, kernel="polynomial", 
                                 degree=3, probability=T)
@@ -111,10 +164,19 @@ KsamplePlot <- function(X, y, Ksample = c(seq(40,100,10), 150,
         }
         if (Caret == "Yes") {
         }
+        DataPred0 <- data.frame(Ksample=rep(Ksample[i], length(Post)*2), 
+                                NCV=j,
+                                CV=c(rep("Test", length(Post)), 
+                                       rep("Train", length(Post))), 
+                                ObsNum=c(Sample[-Train], Sample[Train]),
+                                Pred=c(Post, Post1))
       }
+    DataPred <- rbind(DataPred, DataPred0)
     print(paste("Ksample", j, " ", ksample, sep = ""))
     }
   }
+  DataPred <- DataPred[-1, ]
+  
   KsTest  <- cbind(Ksample, 1 - RsqTest)
   KsTest  <- KsTest[(0 <= KsTest[, 2] & KsTest[, 2] <= 1), ]
   
@@ -122,6 +184,8 @@ KsamplePlot <- function(X, y, Ksample = c(seq(40,100,10), 150,
   KsTrain <- KsTrain[(0 <= KsTrain[, 2] & KsTrain[, 2] <= 1), ]
   
   EstPar <- Ksplot(KsTest, KsTrain, Method=Method, Type=Type)
-  list(OneExpPar = EstPar, Ksample = cbind(Ksample, 1 - RsqTest, 1 - RsqTrain))
+  list(Par = EstPar, 
+       Result = cbind(Ksample, Test=1 - RsqTest, Train=1 - RsqTrain), 
+       Pred = DataPred)
 }
 
